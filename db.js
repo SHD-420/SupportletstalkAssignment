@@ -1,4 +1,4 @@
-const { MongoClient, ServerApiVersion, Db } = require("mongodb");
+const { MongoClient, ServerApiVersion } = require("mongodb");
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(process.env.MONGODB_URI, {
@@ -10,20 +10,25 @@ const client = new MongoClient(process.env.MONGODB_URI, {
 });
 
 /**
- * @type {Db} The mongodb database
+ * @type {import("mongodb").Collection} The mongodb collection
  */
-let _db;
+let _collection;
+
 client
   .connect()
   .then((connectedClient) => {
-    _db = connectedClient.db(process.env.MONGODB_DB);
+    _collection = connectedClient.db(process.env.MONGODB_DB).collection("data");
   })
   .catch(() => process.exit(1));
 
 module.exports = {
   client,
-  db: () => {
-    if (_db) return _db;
+
+  /**
+   * @returns The mongodb collection
+   */
+  collection: () => {
+    if (_collection) return _collection;
     throw new Error("Database not loaded");
   },
 };
