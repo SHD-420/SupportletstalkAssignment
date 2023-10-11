@@ -79,4 +79,4 @@ app.delete("/data/:id", parseObjectIdFromUrl, async (req, res) => {
   return res.json({ _id: req.id });
 });
 
-app.listen(8000, () => console.log("App running on port 8000"));
+app.listen(3000, () => console.log("App running on port 3000"));
